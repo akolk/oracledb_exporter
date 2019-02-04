@@ -30,6 +30,7 @@ clean:
 
 docker:
 	@docker build -t "akolk/oraperf_exporter:${VERSION}" .
+	@docker images
 	@docker tag akolk/oraperf_exporter:${VERSION} akolk/oraperf_exporter:latest
 
 travis: deps test build docker
