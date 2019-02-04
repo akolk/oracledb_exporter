@@ -1,4 +1,4 @@
-VERSION := 0.0.7
+VERSION := 0.0.9
 
 LDFLAGS := -X main.Version=$(VERSION)
 GOFLAGS := -ldflags "$(LDFLAGS) -s -w"
