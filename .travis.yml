@@ -1,26 +1,26 @@
 language: go
 sudo: required
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - REPO=akolk/oracledb_exporter
+  - CGO_ENABLED=0
+  - GOOS=linux
+  - GOARCH=amd64  
 go:
   - 1.11.1
 services:
   - docker
 install: true
-script: make travis
-deploy:
-  skip_cleanup: true
-  provider: releases
-  tags: true
-  file:
-    - "./dist/oracledb_exporter.linux-amd64"
-    - "./dist/oracledb_exporter.darwin-amd64"
-  on:
-    repo: akolk/oracledb_exporter
-    tags: true
-    all_branches: true
-
-after_success:
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      docker login -u $DOCKER_USER -p $DOCKER_PASS ;
-      docker push akolk/oracledb_exporter:${TRAVIS_TAG:-latest} ;
-    fi
-
+script:
+ - export TAG=`if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then echo "latest"; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi`
+ - export REPO=akolk/oracledb_exporter
+ - docker build -t $REPO:$TAG -f Dockerfile .
+ 
+ after_success:
+ - docker login -u $DOCKER_USER -p $DOCKER_PASS
+ - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
+   docker tag $REPO:$TAG $REPO:$TRAVIS_BUILD_NUMBER;
+   docker push $REPO:$TRAVIS_BUILD_NUMBER;
+   fi 
+ - docker push $REPO:$TAG
