@@ -19,5 +19,8 @@ deploy:
     all_branches: true
 
 after_success:
-  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-  docker push akolk/oracledb_exporter:${TRAVIS_TAG:-latest}
+  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+      docker login -u $DOCKER_USER -p $DOCKER_PASS ;
+      docker push akolk/oracledb_exporter:${TRAVIS_TAG:-latest} ;
+    fi
+
