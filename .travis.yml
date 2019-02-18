@@ -15,7 +15,7 @@ deploy:
   on:
     repo: akolk/oracledb_exporter
     tags: true
-    all_branches: true
+    branch: release
 
 after_success:
   docker login -u="$DOCKER_USER" -p="$DOCKER_PASS";
