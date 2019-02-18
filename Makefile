@@ -4,7 +4,6 @@ LDFLAGS := -X main.Version=$(VERSION)
 GOFLAGS := -ldflags "$(LDFLAGS) -s -w"
 GOARCH ?= $(subst x86_64,amd64,$(patsubst i%86,386,$(shell uname -m)))
 
-
 build:
 	@echo build
 	@mkdir -p ./dist
@@ -29,9 +28,11 @@ clean:
 	@rm -rf ./dist
 
 docker:
-	@docker build -t "akolk/oracledb_exporter:${VERSION}" .
+	@docker build -t "akolk/oracledb_exporter:$(VERSION)" .
 	@docker images
-	@docker tag akolk/oracledb_exporter:${VERSION} akolk/oracledb_exporter:latest
+	@docker tag akolk/oracledb_exporter:$(VERSION) akolk/oracledb_exporter:latest
+	@docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+	@docker push akolk/oraclecb_exporter:${VERSION}
 
 travis: deps test build docker
 	@true
