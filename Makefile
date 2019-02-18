@@ -31,7 +31,7 @@ docker:
 	@docker build -t "akolk/oracledb_exporter:$(VERSION)" .
 	@docker images
 	@docker tag akolk/oracledb_exporter:$(VERSION) akolk/oracledb_exporter:latest
-	@docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+	@docker login -u="${DOCKER_USER}" -p="${DOCKER_PASS}"
 	@docker push akolk/oraclecb_exporter:${VERSION}
 
 travis: deps test build docker
