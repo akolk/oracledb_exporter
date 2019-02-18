@@ -18,5 +18,5 @@ deploy:
     branch: release
 
 after_success:
-  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS";
-  docker push akolk/oraclecb_exporter:latest
+  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
+  - docker push akolk/oraclecb_exporter:latest
