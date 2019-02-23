@@ -21,15 +21,8 @@ deploy:
     - "./dist/oracledb_exporter.linux-amd64"
     - "./dist/oracledb_exporter.darwin-amd64"
   on:
-    repo: $REPO
-    tags: true
     branch: master
 
-
-after_success:
-  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
-  - docker push $REPO:latest
-  
-
-
-
+#after_success:
+#  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
+#  - docker push $REPO:latest
