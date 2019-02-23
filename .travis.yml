@@ -22,5 +22,3 @@ deploy:
   file:
     - "./dist/oracledb_exporter.linux-amd64"
     - "./dist/oracledb_exporter.darwin-amd64"
-  on:
-    branch: master
