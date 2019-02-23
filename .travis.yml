@@ -4,19 +4,32 @@ go:
   - 1.11.1
 services:
   - docker
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - REPO=akolk/oracledb_exporter
+  - CGO_ENABLED=0
+  - GOOS=linux
+  - GOARCH=amd64 
 install: true
 script: make travis
 deploy:
   skip_cleanup: true
-  provider: releases
+  provider: script
+  script: bash ./docker_push
   file:
     - "./dist/oracledb_exporter.linux-amd64"
     - "./dist/oracledb_exporter.darwin-amd64"
   on:
-    repo: akolk/oracledb_exporter
+    repo: $REPO
     tags: true
-    branch: release
+    branch: master
+
 
 after_success:
   - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
-  - docker push akolk/oraclecb_exporter:latest
+  - docker push $REPO:latest
+  
+
+
+
